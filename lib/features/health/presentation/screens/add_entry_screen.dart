@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:health_insight_tracker/features/health/presentation/widgets/CustomNumberField.dart';
 import 'package:provider/provider.dart';
 import '../viewmodel/health_viewmodel.dart';
 
@@ -182,93 +183,40 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
                             ),
                           ),
                           const SizedBox(height: 16),
-
-                          Container(
-                            decoration: BoxDecoration(
-                              color: Colors.indigo.withOpacity(0.05),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: TextFormField(
-                              controller: sleepController,
-                              decoration: InputDecoration(
-                                labelText: "Sleep Hours",
-                                prefixIcon: Icon(
-                                  Icons.night_shelter,
-                                  color: Colors.indigo[700],
-                                ),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                  borderSide: BorderSide.none,
-                                ),
-                                filled: true,
-                                fillColor: Colors.transparent,
-                              ),
-                              keyboardType:
-                                  const TextInputType.numberWithOptions(
-                                    decimal: true,
-                                  ),
-                              style: const TextStyle(fontSize: 16),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter sleep hours';
-                                }
-                                final v = double.tryParse(value);
-                                if (v == null) {
-                                  return 'Please enter a valid number';
-                                }
-                                if (v < 0 || v > 24) {
-                                  return "Sleep must be between 0-24 hours";
-                                }
-                                return null;
-                              },
-                            ),
+                          CustomNumberField(
+                            controller: sleepController,
+                            label: "Sleep Hours",
+                            icon: Icons.night_shelter,
+                            color: Colors.indigo,
+                            emptyError: "Please enter sleep hours",
+                            invalidError: "Please enter a valid number",
+                            customValidator: (v) {
+                              if (v < 0 || v > 24) {
+                                return "Sleep must be between 0-24 hours";
+                              }
+                              return null;
+                            },
                           ),
 
                           const SizedBox(height: 12),
 
-                          Container(
-                            decoration: BoxDecoration(
-                              color: Colors.blue.withOpacity(0.05),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: TextFormField(
-                              controller: waterController,
-                              decoration: InputDecoration(
-                                labelText: "Water Intake (Liters)",
-                                prefixIcon: Icon(
-                                  Icons.water_drop,
-                                  color: Colors.blue[700],
-                                ),
-                                suffixText: 'L',
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                  borderSide: BorderSide.none,
-                                ),
-                                filled: true,
-                                fillColor: Colors.transparent,
-                              ),
-                              keyboardType:
-                                  const TextInputType.numberWithOptions(
-                                    decimal: true,
-                                  ),
-                              style: const TextStyle(fontSize: 16),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter water intake';
-                                }
-                                final v = double.tryParse(value);
-                                if (v == null) {
-                                  return 'Please enter a valid number';
-                                }
-                                if (v <= 0) {
-                                  return "Water intake must be greater than 0";
-                                }
-                                if (v > 15) {
-                                  return "Water intake seems too high (max 15L)";
-                                }
-                                return null;
-                              },
-                            ),
+                          CustomNumberField(
+                            controller: waterController,
+                            label: "Water Intake",
+                            icon: Icons.water_drop,
+                            color: Colors.blue,
+                            suffixText: "L",
+                            emptyError: "Please enter water intake",
+                            invalidError: "Please enter a valid number",
+                            customValidator: (v) {
+                              if (v <= 0) {
+                                return "Water intake must be greater than 0";
+                              }
+                              if (v > 15) {
+                                return "Water intake seems too high (max 15L)";
+                              }
+                              return null;
+                            },
                           ),
                         ],
                       ),
